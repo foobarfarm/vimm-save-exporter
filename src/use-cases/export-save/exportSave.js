@@ -1,3 +1,6 @@
 export const exportSave = () => {
-  alert("foo");
+  // Get primary key from game name
+  // Look up game in indexedDB
+  // Serialise record contents
+  // Download serialised contents
 };
