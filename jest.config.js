@@ -1,4 +1,5 @@
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
-  coverageProvider: 'v8',
+  preset: 'ts-jest',
   testEnvironment: 'jsdom',
 };

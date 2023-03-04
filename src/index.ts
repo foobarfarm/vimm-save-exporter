@@ -1,3 +1,3 @@
-import { importSave } from './use-cases/import-save/importSave';
+import { exportSave } from './use-cases/export-save/exportSave';
 
-importSave();
+exportSave();
