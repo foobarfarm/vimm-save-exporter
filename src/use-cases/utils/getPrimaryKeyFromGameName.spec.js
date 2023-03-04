@@ -1,5 +1,4 @@
 import { getPrimaryKeyFromGameName } from './getPrimaryKeyFromGameName';
-import { expect, describe, it } from '@jest/globals';
 
 describe('getPrimaryKeyFromGameName', () => {
   describe('success', () => {
