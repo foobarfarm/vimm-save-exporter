@@ -1,21 +1,21 @@
-import Dexie from 'dexie';
-import { inject, injectable, interfaces } from 'inversify';
-import { FactoryType } from 'inversify/lib/utils/factory_type';
-import { Save } from '../../entities/Save';
-import { container } from '../../IOC/container';
-import { TYPES } from '../../IOC/types';
 import { DatabaseConfig } from '../../use-cases/utils/DatabaseConfig';
+import { inject, injectable } from 'inversify';
+import { Save } from '../../entities/Save';
+import { TYPES } from '../../IOC/types';
+import Dexie from 'dexie';
 
 @injectable()
 export class IndexedDBSaveRepository implements SaveRepository {
+  private dexie: Dexie;
+
+  constructor(@inject(TYPES.DexieFactory) dexieFactory: DexieFactory) {
+    this.dexie = dexieFactory(DatabaseConfig.DatabaseName);
+  }
+
   async getSave(): Promise<SaveRepositoryResult> {
-    const dexieFactory = container.get<interfaces.Factory<Dexie>>(
-      TYPES.DexieFactory
-    );
-
-    const dexie = dexieFactory(DatabaseConfig.DatabaseName);
-
-    const record = await (dexie as any)[DatabaseConfig.ObjectStoreName].get(
+    const record = await (this.dexie as any)[
+      DatabaseConfig.ObjectStoreName
+    ].get(
       '/data/saves/snes/Super Mario RPG - Legend of the Seven Stars (USA).srm'
     );
 

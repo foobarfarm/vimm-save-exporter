@@ -1,12 +1,10 @@
-import Dexie from 'dexie';
 import 'fake-indexeddb/auto';
-import { interfaces } from 'inversify';
-import { Save } from '../../entities/Save';
 import { container } from '../../IOC/container';
-import { TYPES } from '../../IOC/types';
 import { DatabaseConfig } from '../../use-cases/utils/DatabaseConfig';
 import { getDexieWithRecordsAdded } from '../../use-cases/utils/getDexieWithRecordsAdded';
 import { IndexedDBSaveRepository } from './IndexedDBSaveRepository';
+import { Save } from '../../entities/Save';
+import { TYPES } from '../../IOC/types';
 
 describe('IndexedDBSaveRepository', () => {
   describe('getSave', () => {
@@ -25,9 +23,11 @@ describe('IndexedDBSaveRepository', () => {
           objectStoreSchema: 'id, contents',
         });
 
+        const stubDexieFactory: DexieFactory = () => configuredDexie;
+
         container
-          .rebind<interfaces.Factory<Dexie>>(TYPES.DexieFactory)
-          .toFactory(() => () => configuredDexie);
+          .rebind<DexieFactory>(TYPES.DexieFactory)
+          .toFunction(stubDexieFactory);
 
         const indexedDBSaveRepository = container.get<IndexedDBSaveRepository>(
           TYPES.IndexedDBSaveRepository

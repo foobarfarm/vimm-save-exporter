@@ -12,3 +12,5 @@ interface IndexedDBClient {
   getOpenRequestByName(databaseName: string): Promise<IDBOpenDBRequest>;
   getObjectStoreByName(objectStore: string): Promise<IDBOpenDBRequest>;
 }
+
+type DexieFactory = (databaseName: string) => import('dexie').Dexie;

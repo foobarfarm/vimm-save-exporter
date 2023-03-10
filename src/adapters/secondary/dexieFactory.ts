@@ -1,3 +1,4 @@
 import Dexie from 'dexie';
 
-export const dexieFactory = (databaseName: string) => new Dexie(databaseName);
+export const dexieFactory: DexieFactory = (databaseName: string) =>
+  new Dexie(databaseName);
