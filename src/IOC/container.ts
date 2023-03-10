@@ -1,12 +1,23 @@
-import { Container } from 'inversify';
 import 'reflect-metadata';
-import { HTTPClient } from '../adapters/secondary/HTTPClient';
-import { SaveRepository } from '../adapters/secondary/SaveRepository';
+import { Container, interfaces } from 'inversify';
+import { dexieFactory } from '../adapters/secondary/dexieFactory';
+import { getPrimaryKeyFromGameName } from '../use-cases/utils/getPrimaryKeyFromGameName';
+import { IndexedDBSaveRepository } from '../adapters/secondary/IndexedDBSaveRepository';
 import { TYPES } from './types';
+import Dexie from 'dexie';
 
 const container = new Container();
 
-container.bind<SaveRepository>(TYPES.SaveRepository).to(SaveRepository);
-container.bind<HTTPClient>(TYPES.HTTPClient).to(HTTPClient);
+container
+  .bind<IndexedDBSaveRepository>(TYPES.IndexedDBSaveRepository)
+  .to(IndexedDBSaveRepository);
+
+container
+  .bind<interfaces.Factory<Dexie>>(TYPES.DexieFactory)
+  .toFactory<Dexie, [string]>(() => dexieFactory);
+
+container
+  .bind<GetPrimaryKeyFromGameName>(TYPES.GetPrimaryKeyFromGameName)
+  .toFunction(getPrimaryKeyFromGameName);
 
 export { container };
