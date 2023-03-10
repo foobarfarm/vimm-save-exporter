@@ -1,4 +1,5 @@
 export const TYPES = {
-  SaveRepository: Symbol.for('SaveRepository'),
-  HTTPClient: Symbol.for('HTTPClient'),
+  IndexedDBSaveRepository: Symbol.for('IndexedDBSaveRepository'),
+  DexieFactory: Symbol.for('DexieFactory'),
+  GetPrimaryKeyFromGameName: Symbol.for('GetPrimaryKeyFromGameName'),
 };
