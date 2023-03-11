@@ -1,8 +1,8 @@
 import { DatabaseConfig } from '../../use-cases/utils/DatabaseConfig';
 import { inject, injectable } from 'inversify';
-import { Save } from '../../entities/Save';
 import { TYPES } from '../../IOC/types';
 import Dexie from 'dexie';
+import { Save } from '../../entities/Save';
 
 @injectable()
 export class IndexedDBSaveRepository implements SaveRepository {
@@ -13,13 +13,20 @@ export class IndexedDBSaveRepository implements SaveRepository {
   }
 
   async getSaveById(id: string): Promise<SaveRepositoryResult> {
-    const record = await (this.dexie as any)[
-      DatabaseConfig.ObjectStoreName
-    ].get(id);
+    try {
+      const record = await (this.dexie as any)[
+        DatabaseConfig.ObjectStoreName
+      ].get(id);
 
-    return {
-      status: 'success',
-      model: new Save(record),
-    };
+      return {
+        status: 'success',
+        save: new Save(record),
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        error,
+      };
+    }
   }
 }

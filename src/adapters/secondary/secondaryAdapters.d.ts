@@ -4,7 +4,7 @@ interface SaveRepository {
 
 interface SaveRepositoryResult {
   status: 'success' | 'error';
-  model?: import('../../entities/Save').Save;
+  save?: import('../../entities/Save').Save;
   error?: any;
 }
 
