@@ -1,5 +1,5 @@
 interface SaveRepository {
-  getSave(): Promise<SaveRepositoryResult>;
+  getSaveById(id: string): Promise<SaveRepositoryResult>;
 }
 
 interface SaveRepositoryResult {

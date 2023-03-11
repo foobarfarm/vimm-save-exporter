@@ -7,9 +7,9 @@ describe('getDexieWithRecordsAdded', () => {
   describe('get', () => {
     it('returns the expected record added to the object store', async () => {
       // Arrange
-      const primaryKey = 'myId';
+      const id = 'myId';
 
-      const record = { id: primaryKey, contents: 'fake-content' };
+      const record = { id, contents: 'fake-content' };
 
       const configuredIndexedDB = await getDexieWithRecordsAdded({
         databaseName: DatabaseConfig.DatabaseName,
@@ -21,7 +21,7 @@ describe('getDexieWithRecordsAdded', () => {
       // Act
       const actual = await configuredIndexedDB[
         DatabaseConfig.ObjectStoreName
-      ].get(primaryKey);
+      ].get(id);
 
       // Assert
       expect(actual).toEqual(record);

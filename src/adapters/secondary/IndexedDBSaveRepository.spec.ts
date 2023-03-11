@@ -11,12 +11,14 @@ describe('IndexedDBSaveRepository', () => {
     describe('success', () => {
       it('returns a response object with the expected model', async () => {
         // Arrange
+        const id = 'myId';
+
         const configuredDexie = await getDexieWithRecordsAdded({
           databaseName: DatabaseConfig.DatabaseName,
           objectStoreName: DatabaseConfig.ObjectStoreName,
           records: [
             {
-              id: '/data/saves/snes/Super Mario RPG - Legend of the Seven Stars (USA).srm',
+              id,
               contents: new Int8Array([1, 2, 3, 50]),
             },
           ],
@@ -36,13 +38,13 @@ describe('IndexedDBSaveRepository', () => {
         const expected = {
           status: 'success',
           model: new Save({
-            id: '/data/saves/snes/Super Mario RPG - Legend of the Seven Stars (USA).srm',
+            id,
             contents: new Int8Array([1, 2, 3, 50]),
           }),
         };
 
         // Act
-        const actual = await indexedDBSaveRepository.getSave();
+        const actual = await indexedDBSaveRepository.getSaveById(id);
 
         // Assert
         expect(actual).toEqual(expected);

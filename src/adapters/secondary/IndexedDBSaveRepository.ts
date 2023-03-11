@@ -12,12 +12,10 @@ export class IndexedDBSaveRepository implements SaveRepository {
     this.dexie = dexieFactory(DatabaseConfig.DatabaseName);
   }
 
-  async getSave(): Promise<SaveRepositoryResult> {
+  async getSaveById(id: string): Promise<SaveRepositoryResult> {
     const record = await (this.dexie as any)[
       DatabaseConfig.ObjectStoreName
-    ].get(
-      '/data/saves/snes/Super Mario RPG - Legend of the Seven Stars (USA).srm'
-    );
+    ].get(id);
 
     return {
       status: 'success',
