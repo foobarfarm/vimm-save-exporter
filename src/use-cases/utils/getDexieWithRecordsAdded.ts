@@ -11,8 +11,8 @@ type ConfiguredDexie<ObjectStoreName extends string> = Dexie &
   Record<
     ObjectStoreName,
     {
-      get: (id: string) => Promise<any>;
-      add: (record: any) => Promise<void>;
+      get: (key: string) => Promise<any>;
+      add: (item: any, key: string) => Promise<void>;
     }
   >;
 
@@ -34,8 +34,8 @@ export const getDexieWithRecordsAdded = async ({
 
   const objectStore = database[objectStoreName];
 
-  for (let record of records) {
-    await objectStore.add(record);
+  for (let { key, item } of records) {
+    await objectStore.add(item, key);
   }
 
   return database;

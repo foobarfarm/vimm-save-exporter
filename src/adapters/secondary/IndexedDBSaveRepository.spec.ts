@@ -17,17 +17,19 @@ describe('IndexedDBSaveRepository', () => {
         const id = 'myId';
         const mode = 123;
         const record = {
-          gameName: id,
-          mode,
-          timestamp: fakeDate,
-          contents: new Int8Array([1, 2, 3, 50]),
+          key: id,
+          item: {
+            contents: 'fake-content',
+            mode,
+            timestamp: fakeDate,
+          },
         };
 
         const configuredDexie = await getDexieWithRecordsAdded({
           databaseName: DatabaseConfig.DatabaseName,
           objectStoreName: DatabaseConfig.ObjectStoreName,
           records: [record],
-          objectStoreSchema: '&gameName, contents, mode, timestamp',
+          objectStoreSchema: DatabaseConfig.ObjectStoreSchema,
         });
 
         const stubDexieFactory: DexieFactory = () => configuredDexie;
@@ -42,7 +44,7 @@ describe('IndexedDBSaveRepository', () => {
 
         const expected: SaveRepositoryResult = {
           status: 'success',
-          save: new Save(record),
+          save: new Save(record.item),
         };
 
         // Act

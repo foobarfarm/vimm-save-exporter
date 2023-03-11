@@ -12,16 +12,18 @@ describe('getDexieWithRecordsAdded', () => {
       const gameName = 'myId';
 
       const record = {
-        gameName,
-        contents: 'fake-content',
-        mode: 123,
-        timestamp: fakeDate,
+        key: gameName,
+        item: {
+          contents: 'fake-content',
+          mode: 123,
+          timestamp: fakeDate,
+        },
       };
 
       const configuredIndexedDB = await getDexieWithRecordsAdded({
         databaseName: DatabaseConfig.DatabaseName,
         objectStoreName: DatabaseConfig.ObjectStoreName,
-        objectStoreSchema: '&gameName, contents, mode, timestamp',
+        objectStoreSchema: DatabaseConfig.ObjectStoreSchema,
         records: [record],
       });
 
@@ -31,7 +33,7 @@ describe('getDexieWithRecordsAdded', () => {
       ].get(gameName);
 
       // Assert
-      expect(actual).toEqual(record);
+      expect(actual).toEqual(record.item);
     });
   });
 });
