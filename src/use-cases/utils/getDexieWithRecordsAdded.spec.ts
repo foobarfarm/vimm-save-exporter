@@ -32,6 +32,8 @@ describe('getDexieWithRecordsAdded', () => {
         DatabaseConfig.ObjectStoreName
       ].get(gameName);
 
+      configuredIndexedDB.close();
+
       // Assert
       expect(actual).toEqual(record.item);
     });

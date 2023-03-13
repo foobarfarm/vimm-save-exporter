@@ -25,18 +25,13 @@ describe('IndexedDBSaveRepository', () => {
           },
         };
 
-        const configuredDexie = await getDexieWithRecordsAdded({
+        // we only care about adding the record, repository will describe schema to new dexie it pulls from container
+        await getDexieWithRecordsAdded({
           databaseName: DatabaseConfig.DatabaseName,
           objectStoreName: DatabaseConfig.ObjectStoreName,
           records: [record],
           objectStoreSchema: DatabaseConfig.ObjectStoreSchema,
         });
-
-        const stubDexieFactory: DexieFactory = () => configuredDexie;
-
-        container
-          .rebind<DexieFactory>(TYPES.DexieFactory)
-          .toFunction(stubDexieFactory);
 
         const indexedDBSaveRepository = container.get<IndexedDBSaveRepository>(
           TYPES.IndexedDBSaveRepository
