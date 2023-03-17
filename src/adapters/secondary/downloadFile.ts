@@ -1,15 +1,35 @@
-export const downloadFile: DownloadFile = (name: string, contents: string) => {
-  const element = document.createElement('a');
-  element.setAttribute(
-    'href',
-    'data:text/plain;charset=utf-8,' + encodeURIComponent(contents)
-  );
-  element.setAttribute('download', name);
+export const downloadFile: DownloadFile = async (
+  name: string,
+  contents: string
+) => {
+  const fileHandle = await getNewFileHandle(name);
 
-  element.style.display = 'none';
-  document.body.appendChild(element);
+  await writeFile(fileHandle, contents);
+};
 
-  element.click();
+const getNewFileHandle = async (suggestedName: string) => {
+  const options: SaveFilePickerOptions = {
+    suggestedName,
+    types: [
+      {
+        description: 'JSON Files',
+        accept: {
+          'text/json': ['.json'],
+        },
+      },
+    ],
+  };
+  const fileHandle = await window.showSaveFilePicker(options);
 
-  document.body.removeChild(element);
+  return fileHandle;
+};
+
+const writeFile = async (
+  fileHandle: FileSystemFileHandle,
+  contents: string
+) => {
+  const writable = await fileHandle.createWritable();
+
+  await writable.write(contents);
+  await writable.close();
 };
