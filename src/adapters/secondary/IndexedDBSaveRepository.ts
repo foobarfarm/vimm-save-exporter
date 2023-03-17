@@ -14,14 +14,11 @@ export class IndexedDBSaveRepository implements SaveRepository {
 
   async getSaveById(id: string): Promise<SaveRepositoryResult> {
     try {
-      // describe to dexie the schema for the object store
-      this.dexie.version(1).stores({
-        [DatabaseConfig.ObjectStoreName]: DatabaseConfig.ObjectStoreSchema,
-      });
+      await this.dexie.open();
 
-      const record = await (this.dexie as any)[
-        DatabaseConfig.ObjectStoreName
-      ].get(id);
+      const objectStore = this.dexie.table(DatabaseConfig.ObjectStoreName);
+
+      const record = await objectStore.get(id);
 
       return {
         status: 'success',
@@ -32,6 +29,8 @@ export class IndexedDBSaveRepository implements SaveRepository {
         status: 'error',
         error,
       };
+    } finally {
+      this.dexie.close();
     }
   }
 }
