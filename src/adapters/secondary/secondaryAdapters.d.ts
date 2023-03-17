@@ -9,3 +9,5 @@ interface SaveRepositoryResult {
 }
 
 type DexieFactory = (databaseName: string) => import('dexie').Dexie;
+
+type DownloadFile = (name: string, contents: string) => void;

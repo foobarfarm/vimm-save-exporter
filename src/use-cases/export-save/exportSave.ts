@@ -1,15 +1,14 @@
 import { container } from '../../IOC/container';
 import { TYPES } from '../../IOC/types';
-import { DatabaseConfig } from '../utils/DatabaseConfig';
-import { getDexieWithRecordsAdded } from '../utils/getDexieWithRecordsAdded';
 
 export const exportSave = async () => {
-  // Look up game in indexedDB
+  const id = 'myId';
+
   const saveRepository = container.get<SaveRepository>(
     TYPES.IndexedDBSaveRepository
   );
 
-  const { status, error, save } = await saveRepository.getSaveById('myId');
+  const { status, error, save } = await saveRepository.getSaveById(id);
 
   if (status === 'error') {
     console.error('error fetching save', error);
@@ -17,7 +16,7 @@ export const exportSave = async () => {
     return;
   }
 
-  console.log(save);
-  // Serialise record contents
-  // Download serialised contents
+  const downloadFile = container.get<DownloadFile>(TYPES.DownloadFile);
+
+  downloadFile(`${id}-save.json`, JSON.stringify(save));
 };

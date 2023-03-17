@@ -1,5 +1,7 @@
 import { exportSave } from './use-cases/export-save/exportSave';
 
-(async () => {
-  await exportSave();
-})();
+(window as any).exportSave = () => {
+  (async () => {
+    await exportSave();
+  })();
+};
