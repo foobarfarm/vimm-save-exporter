@@ -10,7 +10,9 @@ interface SaveRepositoryResult {
 
 type DexieFactory = (databaseName: string) => import('dexie').Dexie;
 
-type DownloadFile = (name: string, contents: string) => void;
+type DownloadFile = (name: string, contents: string) => Promise<void>;
+
+type UploadFile = () => Promise<string>;
 
 interface SaveSerialiser {
   serialise: (save: import('../../entities/Save').Save) => string;
