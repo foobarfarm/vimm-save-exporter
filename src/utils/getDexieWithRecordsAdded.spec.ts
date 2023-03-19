@@ -1,9 +1,9 @@
 import 'fake-indexeddb/auto';
+import { configureFakeSystemTimeForJest } from './configureFakeSystemTimeForJest';
 import { DatabaseConfig } from './DatabaseConfig';
 import { getDexieWithRecordsAdded } from './getDexieWithRecordsAdded';
 
-const fakeDate = new Date('1981-06-09');
-jest.useFakeTimers().setSystemTime(fakeDate);
+const { fakeDate } = configureFakeSystemTimeForJest();
 
 describe('getDexieWithRecordsAdded', () => {
   describe('get', () => {

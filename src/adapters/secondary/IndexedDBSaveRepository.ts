@@ -1,4 +1,4 @@
-import { DatabaseConfig } from '../../use-cases/utils/DatabaseConfig';
+import { DatabaseConfig } from '../../utils/DatabaseConfig';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../IOC/types';
 import Dexie from 'dexie';

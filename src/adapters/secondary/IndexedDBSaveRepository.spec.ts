@@ -1,13 +1,13 @@
 import 'fake-indexeddb/auto';
+import { configureFakeSystemTimeForJest } from '../../utils/configureFakeSystemTimeForJest';
 import { container } from '../../IOC/container';
-import { DatabaseConfig } from '../../use-cases/utils/DatabaseConfig';
-import { getDexieWithRecordsAdded } from '../../use-cases/utils/getDexieWithRecordsAdded';
+import { DatabaseConfig } from '../../utils/DatabaseConfig';
+import { getDexieWithRecordsAdded } from '../../utils/getDexieWithRecordsAdded';
 import { IndexedDBSaveRepository } from './IndexedDBSaveRepository';
-import { TYPES } from '../../IOC/types';
 import { Save } from '../../entities/Save';
+import { TYPES } from '../../IOC/types';
 
-const fakeDate = new Date('1981-06-09');
-jest.useFakeTimers().setSystemTime(fakeDate);
+const { fakeDate } = configureFakeSystemTimeForJest();
 
 describe('IndexedDBSaveRepository', () => {
   describe('getSave', () => {
