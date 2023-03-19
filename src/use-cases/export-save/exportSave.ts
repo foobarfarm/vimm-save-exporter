@@ -2,7 +2,8 @@ import { container } from '../../IOC/container';
 import { TYPES } from '../../IOC/types';
 
 export const exportSave = async () => {
-  const id = 'myId';
+  const id =
+    '/data/saves/snes/Super Mario RPG - Legend of the Seven Stars (USA).srm';
 
   const saveRepository = container.get<SaveRepository>(
     TYPES.IndexedDBSaveRepository
@@ -11,7 +12,7 @@ export const exportSave = async () => {
   const { status, error, save } = await saveRepository.getSaveById(id);
 
   if (status === 'error') {
-    console.error('error fetching save', error);
+    console.error('error fetching save', JSON.stringify(error));
 
     return;
   }

@@ -1,14 +1,24 @@
 import { exportSave } from './use-cases/export-save/exportSave';
 import { importSave } from './use-cases/import-save/importSave';
 
-(window as any).exportSave = () => {
-  (async () => {
-    await exportSave();
-  })();
-};
+const exportSaveButton = document.getElementById('export-save-button');
+exportSaveButton.addEventListener(
+  'click',
+  () => {
+    (async () => {
+      await exportSave();
+    })();
+  },
+  false
+);
 
-(window as any).importSave = () => {
-  (async () => {
-    await importSave();
-  })();
-};
+const importSaveButton = document.getElementById('import-save-button');
+importSaveButton.addEventListener(
+  'click',
+  () => {
+    (async () => {
+      await importSave();
+    })();
+  },
+  false
+);
