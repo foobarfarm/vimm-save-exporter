@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { Save } from '../../entities/Save';
 
 @injectable()
-export class SaveSerialiser {
+export class VimmSaveSerialiser implements SaveSerialiser {
   serialise(save: Save): string {
     const serialisableSaveObject = {
       ...save,

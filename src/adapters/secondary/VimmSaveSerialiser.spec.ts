@@ -1,7 +1,7 @@
 import { configureFakeSystemTimeForJest } from '../../utils/configureFakeSystemTimeForJest';
 import { container } from '../../IOC/container';
 import { Save } from '../../entities/Save';
-import { SaveSerialiser } from './SaveSerialiser';
+import { VimmSaveSerialiser } from './VimmSaveSerialiser';
 import { TYPES } from '../../IOC/types';
 
 const { fakeDate } = configureFakeSystemTimeForJest();
@@ -16,7 +16,7 @@ describe('Save Serialiser', () => {
         timestamp: fakeDate,
       });
 
-      const saveSerialiser = container.get<SaveSerialiser>(
+      const saveSerialiser = container.get<VimmSaveSerialiser>(
         TYPES.SaveSerialiser
       );
 
@@ -35,7 +35,7 @@ describe('Save Serialiser', () => {
       // Arrange
       const serialisedSave = `{"contents":[1,2,3],"mode":123,"timestamp":"${fakeDate.toISOString()}"}`;
 
-      const saveSerialiser = container.get<SaveSerialiser>(
+      const saveSerialiser = container.get<VimmSaveSerialiser>(
         TYPES.SaveSerialiser
       );
 
