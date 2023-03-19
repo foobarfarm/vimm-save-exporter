@@ -40,7 +40,7 @@ export class IndexedDBSaveRepository implements SaveRepository {
 
       const objectStore = this.dexie.table(DatabaseConfig.ObjectStoreName);
 
-      const record = await objectStore.update(id, updates);
+      await objectStore.update(id, updates);
 
       return {
         status: 'success',
