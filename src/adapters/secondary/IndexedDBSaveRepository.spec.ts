@@ -9,45 +9,78 @@ import { TYPES } from '../../IOC/types';
 
 const { fakeDate } = configureFakeSystemTimeForJest();
 
+const id = 'myId';
+const mode = 123;
+const record = {
+  key: id,
+  item: {
+    contents: 'fake-content',
+    mode,
+    timestamp: fakeDate,
+  },
+};
+
 describe('IndexedDBSaveRepository', () => {
+  beforeAll(async () => {
+    await getDexieWithRecordsAdded({
+      databaseName: DatabaseConfig.DatabaseName,
+      objectStoreName: DatabaseConfig.ObjectStoreName,
+      records: [record],
+      objectStoreSchema: DatabaseConfig.ObjectStoreSchema,
+    });
+  });
+
   describe('getSave', () => {
-    describe('success', () => {
-      it('returns a response object with the expected model', async () => {
-        // Arrange
-        const id = 'myId';
-        const mode = 123;
-        const record = {
-          key: id,
-          item: {
-            contents: 'fake-content',
-            mode,
-            timestamp: fakeDate,
-          },
-        };
+    it('returns a response object with the expected model', async () => {
+      // Arrange
+      const indexedDBSaveRepository = container.get<IndexedDBSaveRepository>(
+        TYPES.IndexedDBSaveRepository
+      );
 
-        // we only care about adding the record, repository will describe schema to new dexie it pulls from container
-        await getDexieWithRecordsAdded({
-          databaseName: DatabaseConfig.DatabaseName,
-          objectStoreName: DatabaseConfig.ObjectStoreName,
-          records: [record],
-          objectStoreSchema: DatabaseConfig.ObjectStoreSchema,
-        });
+      const expected: SaveRepositoryResult = {
+        status: 'success',
+        save: new Save(record.item),
+      };
 
-        const indexedDBSaveRepository = container.get<IndexedDBSaveRepository>(
-          TYPES.IndexedDBSaveRepository
-        );
+      // Act
+      const actual = await indexedDBSaveRepository.getSaveById(id);
 
-        const expected: SaveRepositoryResult = {
-          status: 'success',
-          save: new Save(record.item),
-        };
+      // Assert
+      expect(actual).toEqual(expected);
+    });
+  });
 
-        // Act
-        const actual = await indexedDBSaveRepository.getSaveById(id);
+  describe('updateSave', () => {
+    it('updates the object in the object store as expected', async () => {
+      // Arrange
+      const indexedDBSaveRepository = container.get<IndexedDBSaveRepository>(
+        TYPES.IndexedDBSaveRepository
+      );
 
-        // Assert
-        expect(actual).toEqual(expected);
-      });
+      const newContents = new Int8Array([1, 2, 3, 4]);
+
+      const expected: SaveRepositoryResult = {
+        status: 'success',
+        save: new Save({
+          contents: newContents,
+          mode,
+          timestamp: fakeDate,
+        }),
+      };
+
+      const updates = {
+        contents: newContents,
+        mode,
+        timestamp: fakeDate,
+      };
+
+      // Act
+      await indexedDBSaveRepository.updateSave(id, updates);
+
+      const actual = await indexedDBSaveRepository.getSaveById(id);
+
+      // Assert
+      expect(actual).toEqual(expected);
     });
   });
 });

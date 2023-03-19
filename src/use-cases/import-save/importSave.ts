@@ -8,7 +8,18 @@ export const importSave = async () => {
   const serialisedSave = await uploadFile();
 
   const saveSerialiser = container.get<SaveSerialiser>(TYPES.SaveSerialiser);
-  const save = saveSerialiser.deserialise(serialisedSave);
+  const updates = saveSerialiser.deserialise(serialisedSave);
 
-  console.log(save);
+  const saveRepository = container.get<SaveRepository>(
+    TYPES.IndexedDBSaveRepository
+  );
+  const { status, error } = await saveRepository.updateSave(id, updates);
+
+  if (status === 'error') {
+    console.error('error updating save', error);
+
+    return;
+  }
+
+  console.log('updated save');
 };

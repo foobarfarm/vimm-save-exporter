@@ -33,4 +33,25 @@ export class IndexedDBSaveRepository implements SaveRepository {
       this.dexie.close();
     }
   }
+
+  async updateSave(id: string, updates: any): Promise<SaveRepositoryResult> {
+    try {
+      await this.dexie.open();
+
+      const objectStore = this.dexie.table(DatabaseConfig.ObjectStoreName);
+
+      const record = await objectStore.update(id, updates);
+
+      return {
+        status: 'success',
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        error,
+      };
+    } finally {
+      this.dexie.close();
+    }
+  }
 }
