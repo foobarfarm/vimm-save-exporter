@@ -16,7 +16,9 @@ export const exportSave = async () => {
     return;
   }
 
-  const downloadFile = container.get<DownloadFile>(TYPES.DownloadFile);
+  const saveSerialiser = container.get<SaveSerialiser>(TYPES.SaveSerialiser);
+  const serialisedSave = saveSerialiser.serialise(save);
 
-  downloadFile(`${id}-save.json`, JSON.stringify(save));
+  const downloadSave = container.get<DownloadFile>(TYPES.DownloadFile);
+  downloadSave(`${id}-save.json`, serialisedSave);
 };
