@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Vimm Save Exporter",
+  "version": "0.1",
+  "description": "Import and export saves for online games on Vimm's Lair",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://vimm.net/vault/?p=play&id=1651"],
+      "js": ["bundle.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
